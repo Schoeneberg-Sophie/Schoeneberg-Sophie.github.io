@@ -462,9 +462,9 @@
             <div class="monitor-label">SECTIONS</div>
             <div class="nav-links">
                 <a href="index.html">HOME</a>
-                <a href="index.html#about">ABOUT ME</a>
-                <a href="#contact">CONTACT</a>
-                <a href="index.html#resume">← RESUME</a>
+                <a href="about.html">ABOUT ME</a>
+                <a href="#contact.html">CONTACT</a>
+                <a href="resume.html">← RESUME</a>
             </div>
             <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">☀ LIGHT</button>
         </div>
@@ -564,18 +564,27 @@
         </div>
     </section>
 
-    <!-- Dataset Download Section -->
-<section id="dataset">
+<!-- Dataset Download Section -->
+    <section id="dataset">
         <h2>Dataset Download</h2>
         <div class="card">
             <h3>Keyword Dataset</h3>
             <p>
                 Disclaimer: The raw dataset used for this project was synthesized and adapted from public news article records for analytical purposes.
             </p>
-            <a href="master_article_keywords_sentiment.csv" class="btn-action" download>↓ Download .CSV</a>
-            <a href="final_dataset.rds" class="btn-action" download>↓ Download .RDS (R)</a>
+            <a href="keyword_data.csv" class="btn-action" download>↓ Download .CSV</a>
+            <a href="keyword_data.rds" class="btn-action" download>↓ Download .RDS (R)</a>
+            <br> <br> <br>
+            <p>
+                Download the source script used for processing keywords and analysis.
+            </p>
+            <a href="keyword_code_sample.R" class="btn-action" download>↓ Download Code (.R)</a>
         </div>
     </section>
+
+
+
+
 
     <!-- Footer -->
     <footer id="contact">
