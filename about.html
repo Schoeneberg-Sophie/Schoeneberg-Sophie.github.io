@@ -325,6 +325,23 @@
             background: linear-gradient(180deg, transparent, var(--accent-color), transparent);
             opacity: 0.30;
         }
+
+        /* HIGHLIGHT BOX FOR CORE THESIS */
+        .highlight-box {
+            background: rgba(63, 159, 189, 0.08);
+            border-left: 4px solid var(--accent-color);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="light"] .highlight-box {
+            background: rgba(40, 127, 157, 0.06);
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -353,6 +370,12 @@
 <div class="container">
     <div class="card">
         <h1>About Me</h1>
+        
+        <!-- EXTRA HIGHLIGHT BOX ADDED HERE -->
+        <div class="highlight-box">
+            The top decision-makers (politicians, managers) understand absolutely nothing about machine learning. And the data scientists don't understand anything about politics or strategy. Those who speak both languages fluently are essential for guiding teams, providing trusted counsel, and effectively bridging the management interface.
+        </div>
+
         <p>Hello! I'm Sophie Schöneberg, a Data Science Master's student 
             at the University of Mannheim with a strong focus on corporate 
             security management and data science.</p>
@@ -362,29 +385,41 @@
             Mannheim, where I focused on International Relations and Statistics with 
             excellent grades. My work centered on large-scale data projects, such as
              analysing sentiment differences in independent and state-controlled news
-              articles, where I examined over 20,000 articles and their commentary 
-              across various economic, social, and political events. I primarily work 
-              with R and Python to develop the projects available on my page. I wrote
+             articles, where I examined over 20,000 articles and their commentary 
+             across various economic, social, and political events. I primarily work 
+             with R and Python to develop the projects available on my page. I wrote
             my Bachelor's Thesis on the growing impact of dual-use satellites in space and 
             the dangers that come with blurring the lines between civil and military objects. </p>
         <p>I also work as a Student Researcher at the Chair of International Relations, 
             where I collect information on pro-government militias, paramilitaries, and
              private security companies for various countries, with a primary focus on
-              Africa and Asia. If you are interested in learning more about me, feel 
-              free to download my resume or message me on your preferred communication
-               channel.</p>
+             Africa and Asia. If you are interested in learning more about me, feel 
+             free to download my resume or message me on your preferred communication
+             channel.</p>
 
         <h2>Interests</h2>
-        <p>My interests lie in both qualitative and quantitative analyses of
-             security-related events. With my skill set, I aim to provide a fresh 
-             perspective on the growing field of data science within corporate security
-              environments. Backed by my academic and professional background, I am 
-              motivated by contemporary "breaking news" issues and their impacts on 
-              individuals and businesses. Here are a few questions I find compelling:</p>
+        <p>My interests lie in both qualitative and 
+            quantitative analyses of security-related events, 
+            specifically bridging the gap between political science and advanced data science.
+            With my skill set, I aim to drive data-driven decision-making in the fields of Cyber
+            Threat Intelligence (CTI), Open Source Intelligence (OSINT), and Geopolitical Risk 
+            Modeling within corporate security and supply chain environments. Backed by my academic
+            background and technical expertise, I am motivated by contemporary global disruptions and
+            their impacts on critical infrastructure, logistics, and international business. Here 
+            are a few questions I find compelling:</p>
         <p>
-            • Did the electricity supply get overwhelmed during the World Cup?<br> 
-            • Could James Bond traverse London without being detected by CCTV?<br>
-            • How can we reliably distinguish between hateful bots and hateful people online?
+            • How can we automatically detect and track supply chain vulnerabilities or 
+            maritime/aviation disruptions using open-source data and anomaly detection? When a 
+            single cargo ship blocks a global trade hub, what mathematical structure
+            tells us in advance where the next fragile bottleneck in the global supply chain 
+            will break?<br> 
+            • Can Natural Language Processing (NLP) map and forecast geopolitical tensions 
+            and state-sponsored disinformation campaigns in real-time?<br>
+            • How do we transition from reactive corporate security to predictive threat
+            intelligence by fusing hard data streams with qualitative geopolitical analysis?
+            • How can we use nocturnal satellite imagery and light anomalies to predict
+            actual economic activity or trouble spots in lockdown regions where all official
+            statistics are manipulated?
         </p>
     </div>
 </div>
