@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bachelor Thesis | Sophie Schöneberg</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #06121b;
+            --bg-secondary: #091a25;
+            --card-bg: rgba(9, 27, 38, 0.90);
+
+            --text-main: #e9f3f7;
+            --text-muted: #91aab5;
+
+            /* Blue security palette */
+            --accent-color: #55b8d4;
+            --accent-bright: #79d5ef;
+            --accent-glow: rgba(85, 184, 212, 0.16);
+
+            --blue-security: #3f9fbd;
+            --blue-bright: #62c9e8;
+            --blue-glow: rgba(63, 159, 189, 0.13);
+
+            --border-color: rgba(104, 164, 183, 0.22);
+            --border-strong: rgba(85, 184, 212, 0.50);
+
+            --nav-bg: rgba(5, 18, 27, 0.92);
+            --shadow-color: rgba(0, 0, 0, 0.45);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #e5eef2;
+            --bg-secondary: #d7e5ea;
+            --card-bg: rgba(248, 252, 253, 0.94);
+
+            --text-main: #142831;
+            --text-muted: #58717c;
+
+            --accent-color: #287f9d;
+            --accent-bright: #1d6d89;
+            --accent-glow: rgba(40, 127, 157, 0.13);
+
+            --blue-security: #277b98;
+            --blue-bright: #206c87;
+            --blue-glow: rgba(39, 123, 152, 0.10);
+
+            --border-color: rgba(38, 91, 108, 0.18);
+            --border-strong: rgba(40, 127, 157, 0.40);
+
+            --nav-bg: rgba(248, 252, 253, 0.92);
+            --shadow-color: rgba(24, 54, 64, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 1.5rem 3rem;
+            min-height: 100vh;
+
+            background-image:
+                radial-gradient(circle 700px at 50% 5%, var(--accent-glow) 0%, transparent 60%),
+                radial-gradient(circle 550px at 88% 72%, var(--blue-glow) 0%, transparent 65%),
+                linear-gradient(rgba(85, 184, 212, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 184, 212, 0.045) 1px, transparent 1px),
+                linear-gradient(rgba(63, 159, 189, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(63, 159, 189, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg-color) 0%, var(--bg-secondary) 100%);
+
+            background-size: 100% 100%, 100% 100%, 80px 80px, 80px 80px, 20px 20px, 20px 20px, 100% 100%;
+            background-attachment: fixed;
+        }
+
+        [data-theme="light"] body {
+            background-image:
+                radial-gradient(circle 700px at 50% 5%, var(--accent-glow) 0%, transparent 60%),
+                radial-gradient(circle 550px at 88% 72%, var(--blue-glow) 0%, transparent 65%),
+                linear-gradient(rgba(40, 127, 157, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(40, 127, 157, 0.055) 1px, transparent 1px),
+                linear-gradient(rgba(39, 123, 152, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(39, 123, 152, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg-color) 0%, var(--bg-secondary) 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+            background-image:
+                linear-gradient(90deg, transparent 0%, transparent 7%, rgba(85, 184, 212, 0.12) 7.05%, transparent 7.1%, transparent 26%, rgba(85, 184, 212, 0.09) 26.05%, transparent 26.1%, transparent 51%, rgba(63, 159, 189, 0.10) 51.05%, transparent 51.1%, transparent 76%, rgba(85, 184, 212, 0.08) 76.05%, transparent 76.1%, transparent 93%),
+                linear-gradient(0deg, transparent 0%, transparent 14%, rgba(85, 184, 212, 0.10) 14.05%, transparent 14.1%, transparent 38%, rgba(63, 159, 189, 0.10) 38.05%, transparent 38.1%, transparent 63%, rgba(85, 184, 212, 0.09) 63.05%, transparent 63.1%, transparent 84%, rgba(85, 184, 212, 0.08) 84.05%, transparent 84.1%);
+            opacity: 0.9;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                conic-gradient(from 225deg at 82% 22%, transparent 0deg, rgba(63, 159, 189, 0.055) 18deg, transparent 40deg),
+                conic-gradient(from 35deg at 18% 76%, transparent 0deg, rgba(85, 184, 212, 0.045) 20deg, transparent 42deg),
+                radial-gradient(circle 260px at 82% 22%, transparent 0 90px, rgba(63, 159, 189, 0.14) 91px 92px, transparent 93px 150px, rgba(63, 159, 189, 0.065) 151px 152px, transparent 153px),
+                radial-gradient(circle 220px at 18% 76%, transparent 0 70px, rgba(85, 184, 212, 0.10) 71px 72px, transparent 73px 130px, rgba(85, 184, 212, 0.055) 131px 132px, transparent 133px);
+        }
+
+        /* Navigation Bar */
+        .cctv-monitor {
+            max-width: 1240px;
+            margin: 1rem auto 0;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+            border: 1px solid rgba(85, 184, 212, 0.38);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(5, 22, 32, 0.96), rgba(7, 30, 42, 0.94));
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.50), 0 0 35px rgba(63, 159, 189, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .cctv-monitor {
+            background: linear-gradient(135deg, rgba(244, 250, 252, 0.97), rgba(226, 241, 246, 0.96));
+        }
+
+        .monitor-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.12);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.10em;
+        }
+
+        .monitor-title {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .monitor-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-muted);
+        }
+
+        .live-indicator {
+            color: var(--blue-bright);
+            text-shadow: 0 0 8px var(--blue-security), 0 0 15px var(--blue-glow);
+        }
+
+        .live-indicator::before {
+            content: "●";
+            margin-right: 0.35rem;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        .monitor-navigation {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.85rem 1rem;
+        }
+
+        .monitor-label {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            padding-right: 0.6rem;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            flex: 1;
+            gap: 0.55rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            flex: 1;
+            padding: 0.65rem 0.8rem;
+            border: 1px solid rgba(85, 184, 212, 0.22);
+            border-radius: 5px;
+            background: rgba(8, 32, 44, 0.62);
+            color: var(--text-muted);
+            text-decoration: none;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        [data-theme="light"] .nav-links a {
+            background: rgba(219, 237, 242, 0.70);
+        }
+
+        .nav-links a::before {
+            content: "▸";
+            margin-right: 0.35rem;
+            color: var(--blue-security);
+            opacity: 0.55;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-bright);
+            border-color: var(--border-strong);
+            background: rgba(63, 159, 189, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            flex-shrink: 0;
+            background: rgba(8, 32, 44, 0.70);
+            border: 1px solid rgba(85, 184, 212, 0.25);
+            color: var(--text-main);
+            padding: 0.65rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-strong);
+            color: var(--accent-bright);
+        }
+
+        .monitor-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.45rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+        }
+
+        .monitor-bottom span:first-child { color: var(--blue-security); }
+        .monitor-bottom span:last-child { color: var(--accent-color); }
+
+        /* Content Layout */
+        .container {
+            max-width: 1240px;
+            margin: 4rem auto 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 4rem 1rem 3.5rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        header h1 span {
+            color: var(--accent-color);
+        }
+
+        header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 4.5rem;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.55rem;
+            margin-bottom: 1.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2::before {
+            content: "//";
+            color: var(--accent-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+        }
+
+        h2::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, var(--border-color), transparent);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 2.2rem;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            backdrop-filter: blur(8px);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Image styling placeholder & Dynamic theme toggling */
+        .thesis-figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .thesis-figure img {
+            max-width: 100%;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .thesis-figure figcaption {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Theme-switching image logic */
+        .theme-img-light { display: none; }
+        .theme-img-dark { display: block; margin: 0 auto; }
+
+        [data-theme="light"] .theme-img-dark { display: none; }
+        [data-theme="light"] .theme-img-light { display: block; margin: 0 auto; }
+
+        /* Action buttons (Download Dataset, etc.) */
+        .btn-action {
+            display: inline-block;
+            padding: 0.7rem 1.2rem;
+            background: rgba(63, 159, 189, 0.15);
+            border: 1px solid var(--border-strong);
+            color: var(--accent-bright);
+            text-decoration: none;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .btn-action:hover {
+            background: rgba(63, 159, 189, 0.3);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Sources List */
+        .sources-list {
+            list-style-type: none;
+            counter-reset: source-counter;
+        }
+
+        .sources-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        .sources-list li::before {
+            counter-increment: source-counter;
+            content: "[" counter(source-counter) "]";
+            position: absolute;
+            left: 0;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-top: 5rem;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        footer strong { color: var(--accent-color); }
+    </style>
+</head>
+
+<body data-theme="dark">
+
+    <!-- Navigation Bar -->
+    <nav class="cctv-monitor">
+        <div class="monitor-top">
+            <div class="monitor-title">THESIS RESEARCH // ACADEMIC TERMINAL</div>
+            <div class="monitor-status">
+                <span class="live-indicator">LIVE</span>
+                <span>DOC-01</span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+        </div>
+        <div class="monitor-navigation">
+            <div class="monitor-label">SECTIONS</div>
+            <div class="nav-links">
+                <a href="index.html">HOME</a>
+                <a href="about.html">ABOUT ME</a>
+                <a href="contact.html">CONTACT</a>
+                <a href="resume.html">← RESUME</a>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">☀ LIGHT</button>
+        </div>
+    </nav>
+
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem);">Bachelor Thesis: <span>Security Dilemma in Space: 
+            Quantitative Analysis of Worldwide Procurement of Dual-Use Satellites</span></h1>
+        <p>University of Mannheim — Department of Political Science - Faculty of International Relations</p>
+    </header>
+
+    <!-- Abstract & Body Text Section -->
+    <section id="abstract">
+        <h2>Overview</h2>
+
+        <!-- Key Implications & Contributions -->
+        <div class="card">
+            <h3>Findings & Empirical Takeaways</h3>
+            <p>
+                <strong>1. The Vanishing Civil-Military Binary:</strong> The rapid rise of Civil-Military Fusion (CMF) blurs the line between commercial routine and military positioning, turning space into a legally ambiguous "grey zone."
+            </p>
+            <p>
+                <strong>2. Targeting & Legal Risks:</strong> Because commercial infrastructure can double as military intelligence, civilian assets face a heightened risk of being perceived or targeted as legitimate military objectives, complicating international law and global security.
+            </p>
+
+            <!-- Dynamic Theme-Switching Payload Plot Figure -->
+            <figure class="thesis-figure">
+                <img src="bachelor-thesis_picture_2a.png" alt="Longitudinal Analysis - Dark Mode" class="theme-img-dark">
+                <img src="bachelor-thesis_picture_2b.png" alt="Longitudinal Analysis - Light Mode" class="theme-img-light">
+                <figcaption>Figure 1: Longitudinal Analyis of Satellites (2000–2025) // CelesTrak Database.</figcaption>
+            </figure>
+
+        </div>
+
+        <div class="card">
+            <h3>Core Research Question & Motivation</h3>
+            <p>
+                Does the proliferation of dual-use satellites indicate a security dilemma in space? <br> <br> While qualitative research and theoretical implications have long investigated the security dilemma in space, this study addresses a major gap by utilising the <strong>first quantitative panel data regression</strong> of global space assets from 2000 to 2024 to test whether these theoretical considerations hold up in practice.
+            </p>
+            <p>
+                Space has increasingly transformed from a state-monopoly commercial commodity into an environment for state actors to defend national sovereignty. Driven by the <strong>New Space paradigm</strong> and Public-Private Partnerships (PPPs), such as SpaceX mega-constellations, the civil-military binary in orbit is vanishing in favour of integrated space technology. This introduces severe legal ambiguity regarding whether civilian space assets have become legitimate military targets.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Implications & Contributions/h3>
+            <p>
+                <strong>Geopolitical Catalysts & Institutional Momentum:</strong> Events like the 2014 Crimean invasion acted as an exogenous shock and catalyst for initial U.S. procurement (such as phasing out Russian RD-180 engines and certifying SpaceX's Falcon 9 in 2015). However, long-term capabilities are primarily driven by high institutional momentum rather than day-to-day reactionary predictions of rival actions.
+            </p>
+
+            <!-- Dynamic Theme-Switching Payload Plot Figure -->
+            <figure class="thesis-figure">
+                <img src="bachelor-thesis_picture_1a.png" alt="Annual Functional Payload Launches - Dark Mode" class="theme-img-dark">
+                <img src="bachelor-thesis_picture_1b.png" alt="Annual Functional Payload Launches - Light Mode" class="theme-img-light">
+                <figcaption>Figure 2: Annual Functional Payload Launches (1957–2025) // CelesTrak Database.</figcaption>
+            </figure>
+
+            <p>
+                <strong>Decoupling from Traditional Indicators:</strong> Total strategic space assets display a functional decoupling from traditional domestic metrics; national military expenditure and regime type are largely insignificant predictors, highlighting the dominant role of commercial companies.
+            </p>
+            <p>
+                <strong>The Action-Reaction Spiral:</strong> Western countries, especially the U.S., invested significantly in dual-use technology post-2015, signaling a new era of space security. In response, rival countries like China and Russia have significantly increased their respective Civil-Military Fusion (CMF) capabilities to maintain parity and close the resilience gap.
+            </p>
+        </div>
+    </section>
+
+    <!-- Dataset Download Section -->
+    <section id="dataset">
+        <h2>Dataset Download</h2>
+        <div class="card">
+            <h3>Dataset</h3>
+            <p>
+            Disclaimer: The raw dataset used as the foundation for this work was originally compiled 
+            and provided by CelesTrak (https://celestrak.org/). The data has been filtered, processed, 
+            and modified for the purpose of this Bachelor Thesis at the University of Mannheim. 
+            </p>
+           <a href="satellite_data.csv" class="btn-action" download>↓ Download .CSV</a>
+    <a href="satellite_data.xlsx" class="btn-action" download>↓ Download .XLSX</a>
+    <a href="satellite_data.rds" class="btn-action" download>↓ Download .RDS (R)</a>
+ </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <p>© 2026 Sophie Rebecca Schöneberg. All rights reserved.</p>
+        <p><strong>University of Mannheim</strong> Bachelor Thesis Documentation.</p>
+    </footer>
+
+</div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('theme-btn');
+
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                btn.textContent = '☾ DARK';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀ LIGHT';
+            }
+        }
+    </script>
+</body>
+</html>
