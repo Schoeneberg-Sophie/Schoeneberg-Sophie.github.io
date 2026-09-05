@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Delays | Sophie Schöneberg</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #06121b;
+            --bg-secondary: #091a25;
+            --card-bg: rgba(9, 27, 38, 0.90);
+
+            --text-main: #e9f3f7;
+            --text-muted: #91aab5;
+
+            /* Blue security palette */
+            --accent-color: #55b8d4;
+            --accent-bright: #79d5ef;
+            --accent-glow: rgba(85, 184, 212, 0.16);
+
+            --blue-security: #3f9fbd;
+            --blue-bright: #62c9e8;
+            --blue-glow: rgba(63, 159, 189, 0.13);
+
+            --border-color: rgba(104, 164, 183, 0.22);
+            --border-strong: rgba(85, 184, 212, 0.50);
+
+            --nav-bg: rgba(5, 18, 27, 0.92);
+            --shadow-color: rgba(0, 0, 0, 0.45);
+
+            /* PyCharm UI Simulation Variables (Dark theme defaults) */
+            --pycharm-bg: #1e1f22;
+            --pycharm-header: #2b2d30;
+            --pycharm-border: #393b40;
+            --pycharm-tab-active: #1e1f22;
+            --pycharm-gutter-bg: #1e1f22;
+            --pycharm-gutter-text: #7a7a7a;
+            --pycharm-keyword: #cc7832;
+            --pycharm-string: #6a8759;
+            --pycharm-function: #ffc66d;
+            --pycharm-number: #6897bb;
+            --pycharm-comment: #808080;
+            --pycharm-variable: #a9b7c6;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #e5eef2;
+            --bg-secondary: #d7e5ea;
+            --card-bg: rgba(248, 252, 253, 0.94);
+
+            --text-main: #142831;
+            --text-muted: #58717c;
+
+            --accent-color: #287f9d;
+            --accent-bright: #1d6d89;
+            --accent-glow: rgba(40, 127, 157, 0.13);
+
+            --blue-security: #277b98;
+            --blue-bright: #206c87;
+            --blue-glow: rgba(39, 123, 152, 0.10);
+
+            --border-color: rgba(38, 91, 108, 0.18);
+            --border-strong: rgba(40, 127, 157, 0.40);
+
+            --nav-bg: rgba(248, 252, 253, 0.92);
+            --shadow-color: rgba(24, 54, 64, 0.12);
+
+            /* PyCharm UI Simulation Variables (Light theme variant matching PyCharm's Light Edit scheme) */
+            --pycharm-bg: #ffffff;
+            --pycharm-header: #f2f2f2;
+            --pycharm-border: #d0d0d0;
+            --pycharm-tab-active: #ffffff;
+            --pycharm-gutter-bg: #ffffff;
+            --pycharm-gutter-text: #a0a0a0;
+            --pycharm-keyword: #0033b3;
+            --pycharm-string: #067d17;
+            --pycharm-function: #00627a;
+            --pycharm-number: #1750eb;
+            --pycharm-comment: #8c8c8c;
+            --pycharm-variable: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 1.5rem 3rem;
+            min-height: 100vh;
+
+            background-image:
+                radial-gradient(circle 700px at 50% 5%, var(--accent-glow) 0%, transparent 60%),
+                radial-gradient(circle 550px at 88% 72%, var(--blue-glow) 0%, transparent 65%),
+                linear-gradient(rgba(85, 184, 212, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 184, 212, 0.045) 1px, transparent 1px),
+                linear-gradient(rgba(63, 159, 189, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(63, 159, 189, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg-color) 0%, var(--bg-secondary) 100%);
+
+            background-size: 100% 100%, 100% 100%, 80px 80px, 80px 80px, 20px 20px, 20px 20px, 100% 100%;
+            background-attachment: fixed;
+        }
+
+        [data-theme="light"] body {
+            background-image:
+                radial-gradient(circle 700px at 50% 5%, var(--accent-glow) 0%, transparent 60%),
+                radial-gradient(circle 550px at 88% 72%, var(--blue-glow) 0%, transparent 65%),
+                linear-gradient(rgba(40, 127, 157, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(40, 127, 157, 0.055) 1px, transparent 1px),
+                linear-gradient(rgba(39, 123, 152, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(39, 123, 152, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, var(--bg-color) 0%, var(--bg-secondary) 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+            background-image:
+                linear-gradient(90deg, transparent 0%, transparent 7%, rgba(85, 184, 212, 0.12) 7.05%, transparent 7.1%, transparent 26%, rgba(85, 184, 212, 0.09) 26.05%, transparent 26.1%, transparent 51%, rgba(63, 159, 189, 0.10) 51.05%, transparent 51.1%, transparent 76%, rgba(85, 184, 212, 0.08) 76.05%, transparent 76.1%, transparent 93%),
+                linear-gradient(0deg, transparent 0%, transparent 14%, rgba(85, 184, 212, 0.10) 14.05%, transparent 14.1%, transparent 38%, rgba(63, 159, 189, 0.10) 38.05%, transparent 38.1%, transparent 63%, rgba(85, 184, 212, 0.09) 63.05%, transparent 63.1%, transparent 84%, rgba(85, 184, 212, 0.08) 84.05%, transparent 84.1%);
+            opacity: 0.9;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                conic-gradient(from 225deg at 82% 22%, transparent 0deg, rgba(63, 159, 189, 0.055) 18deg, transparent 40deg),
+                conic-gradient(from 35deg at 18% 76%, transparent 0deg, rgba(85, 184, 212, 0.045) 20deg, transparent 42deg),
+                radial-gradient(circle 260px at 82% 22%, transparent 0 90px, rgba(63, 159, 189, 0.14) 91px 92px, transparent 93px 150px, rgba(63, 159, 189, 0.065) 151px 152px, transparent 153px),
+                radial-gradient(circle 220px at 18% 76%, transparent 0 70px, rgba(85, 184, 212, 0.10) 71px 72px, transparent 73px 130px, rgba(85, 184, 212, 0.055) 131px 132px, transparent 133px);
+        }
+
+        /* Navigation Bar */
+        .cctv-monitor {
+            max-width: 1240px;
+            margin: 1rem auto 0;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+            border: 1px solid rgba(85, 184, 212, 0.38);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(5, 22, 32, 0.96), rgba(7, 30, 42, 0.94));
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.50), 0 0 35px rgba(63, 159, 189, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .cctv-monitor {
+            background: linear-gradient(135deg, rgba(244, 250, 252, 0.97), rgba(226, 241, 246, 0.96));
+        }
+
+        .monitor-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.12);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.10em;
+        }
+
+        .monitor-title {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .monitor-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-muted);
+        }
+
+        .live-indicator {
+            color: var(--blue-bright);
+            text-shadow: 0 0 8px var(--blue-security), 0 0 15px var(--blue-glow);
+        }
+
+        .live-indicator::before {
+            content: "●";
+            margin-right: 0.35rem;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        .monitor-navigation {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.85rem 1rem;
+        }
+
+        .monitor-label {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            padding-right: 0.6rem;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .nav-links {
+            display: flex;
+            flex: 1;
+            gap: 0.55rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            flex: 1;
+            padding: 0.65rem 0.8rem;
+            border: 1px solid rgba(85, 184, 212, 0.22);
+            border-radius: 5px;
+            background: rgba(8, 32, 44, 0.62);
+            color: var(--text-muted);
+            text-decoration: none;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        [data-theme="light"] .nav-links a {
+            background: rgba(219, 237, 242, 0.70);
+        }
+
+        .nav-links a::before {
+            content: "▸";
+            margin-right: 0.35rem;
+            color: var(--blue-security);
+            opacity: 0.55;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-bright);
+            border-color: var(--border-strong);
+            background: rgba(63, 159, 189, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            flex-shrink: 0;
+            background: rgba(8, 32, 44, 0.70);
+            border: 1px solid rgba(85, 184, 212, 0.25);
+            color: var(--text-main);
+            padding: 0.65rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-strong);
+            color: var(--accent-bright);
+        }
+
+        .monitor-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.45rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+        }
+
+        .monitor-bottom span:first-child { color: var(--blue-security); }
+        .monitor-bottom span:last-child { color: var(--accent-color); }
+
+        /* Content Layout */
+        .container {
+            max-width: 1240px;
+            margin: 4rem auto 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 4rem 1rem 3.5rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        header h1 span {
+            color: var(--accent-color);
+        }
+
+        header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 4.5rem;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.55rem;
+            margin-bottom: 1.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2::before {
+            content: "//";
+            color: var(--accent-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+        }
+
+        h2::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, var(--border-color), transparent);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 2.2rem;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            backdrop-filter: blur(8px);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Figure Sizing & Theme Switching Logic */
+        .correlation-figure,
+        .thesis-figure {
+            max-width: 100%;
+            margin: 1.5em 0;
+            text-align: center;
+        }
+
+        .correlation-figure img,
+        .thesis-figure img {
+            width: 65%;          
+            height: auto;
+            max-width: 65%;      
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: none;      
+        }
+
+        /* Dark Theme Display rules */
+        [data-theme="dark"] .theme-img-dark {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Light Theme Display rules */
+        [data-theme="light"] .theme-img-light {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Action buttons */
+        .btn-action {
+            display: inline-block;
+            padding: 0.7rem 1.2rem;
+            background: rgba(63, 159, 189, 0.15);
+            border: 1px solid var(--border-strong);
+            color: var(--accent-bright);
+            text-decoration: none;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn-action:hover {
+            background: rgba(63, 159, 189, 0.3);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Balanced side-by-side flex container for picture and download option */
+        .figure-download-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5em 0;
+            flex-wrap: wrap;
+        }
+
+        .figure-download-row .correlation-figure {
+            margin: 0;
+            flex: 1;
+            text-align: right;
+        }
+
+        .figure-download-row .correlation-figure img {
+            margin: 0 0 0 auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .download-action-container {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Collapsible Code Dropdown Styling */
+        .code-dropdown {
+            margin-top: 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .code-dropdown summary {
+            padding: 0.75rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-bright);
+            cursor: pointer;
+            user-select: none;
+            background: rgba(63, 159, 189, 0.08);
+        }
+
+        .code-dropdown summary:hover {
+            background: rgba(63, 159, 189, 0.15);
+        }
+
+        .code-scroll-container {
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(3, 12, 18, 0.65);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            white-space: pre-wrap;
+        }
+
+        [data-theme="light"] .code-scroll-container {
+            background: rgba(220, 235, 240, 0.7);
+        }
+
+        /* PyCharm IDE Simulated Widget Styling */
+        .pycharm-editor {
+            margin: 1.5rem 0;
+            border: 1px solid var(--pycharm-border);
+            border-radius: 8px;
+            background-color: var(--pycharm-bg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .pycharm-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--pycharm-header);
+            border-bottom: 1px solid var(--pycharm-border);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .pycharm-window-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pycharm-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .pycharm-dot-red { background-color: #ff5f56; }
+        .pycharm-dot-yellow { background-color: #ffbd2e; }
+        .pycharm-dot-green { background-color: #27c93f; }
+
+        .pycharm-tabs {
+            display: flex;
+            background-color: var(--pycharm-header);
+            border-bottom: 1px solid var(--pycharm-border);
+            overflow-x: auto;
+        }
+
+        .pycharm-tab {
+            padding: 0.45rem 1rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border-right: 1px solid var(--pycharm-border);
+            background-color: var(--pycharm-header);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pycharm-tab.active {
+            background-color: var(--pycharm-tab-active);
+            color: var(--text-main);
+            border-top: 2px solid var(--accent-color);
+            border-bottom: 1px solid var(--pycharm-bg);
+            font-weight: 600;
+        }
+
+        .pycharm-body {
+            display: flex;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 0.8rem 0;
+            background-color: var(--pycharm-bg);
+        }
+
+        .pycharm-gutter {
+            width: 45px;
+            text-align: right;
+            padding-right: 12px;
+            color: var(--pycharm-gutter-text);
+            font-size: 0.72rem;
+            user-select: none;
+            background-color: var(--pycharm-gutter-bg);
+            line-height: 1.5;
+        }
+
+        .pycharm-code-content {
+            flex: 1;
+            padding-right: 1rem;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* PyCharm Syntax Highlighting Classes */
+        .py-keyword { color: var(--pycharm-keyword); font-weight: 600; }
+        .py-string { color: var(--pycharm-string); }
+        .py-function { color: var(--pycharm-function); }
+        .py-number { color: var(--pycharm-number); }
+        .py-comment { color: var(--pycharm-comment); font-style: italic; }
+        .py-variable { color: var(--pycharm-variable); }
+
+        /* Footer / Legal Disclaimer Styling */
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px dashed var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .legal-disclaimer {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.8;
+            font-family: 'JetBrains Mono', monospace;
+        }
+  /* R Console Theme Container */
+  .r-console-dropdown {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', Courier, monospace;
+    margin: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  .r-console-dropdown summary {
+    background-color: #2d2d2d;
+    color: #cccccc;
+    padding: 10px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #333333;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .r-console-dropdown summary:hover {
+    background-color: #383838;
+    color: #ffffff;
+  }
+
+  /* Fake RStudio Console Header Icon/Dot */
+  .r-console-dropdown summary::before {
+    content: "R";
+    display: inline-block;
+    background-color: #276dc2;
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .r-console-scroll-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #1e1e1e;
+  }
+
+  .r-console-scroll-container pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .r-console-scroll-container code {
+    color: #9cdcfe; /* RStudio-like variable/code color */
+    font-size: 13px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+
+<body data-theme="dark">
+
+    <!-- Navigation Bar -->
+    <nav class="cctv-monitor">
+        <div class="monitor-top">
+            <div class="monitor-title">THESIS RESEARCH // ACADEMIC TERMINAL</div>
+            <div class="monitor-status">
+                <span class="live-indicator">LIVE</span>
+                <span>DOC-01</span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+        </div>
+        <div class="monitor-navigation">
+            <div class="monitor-label">SECTIONS</div>
+            <div class="nav-links">
+                <a href="../index.html">HOME</a>
+                <a href="../about.html">ABOUT ME</a>
+                <a href="../contac.html">CONTACT</a>
+                <a href="../resume.html">← RESUME</a>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">☀ LIGHT</button>
+        </div>
+    </nav>
+
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem);"><span>Machine learning for Weather-Related Flight Delays across US Airports</span></h1>
+        <p>Independent Project</p>
+    </header>
+
+    <!-- Abstract & Body Text Section -->
+    <section id="abstract">
+        <h2>Overview</h2>
+
+    <!-- Key Implications & Contributions -->
+<div class="card">
+    <h3>Key Implications & Contributions</h3>
+    <p>In aviation, weather is one of the primary variables, alongside logistics, that impact whether or not flights will be delayed. 
+        Just this year, all flights in New York City were cancelled for days due to a massive blizzard hitting the region, as such 
+        monitoring weather is critical for companies.</p>
+    
+    <!-- Centered & Narrowed Interactive Map Container -->
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <div style="width: 100%; max-width: 700px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); background: #1e1e1e;">
+            <iframe src="us_flight_plotly_map.html" width="100%" height="450px" style="border: none; display: block;"></iframe>
+        </div>
+    </div>
+</div>
+
+        <div class="card">
+            <h3>Model Assumptions</h3>
+            <p>
+                Importantly, this model only looks at weather <strong>and</strong> wether or not there was a delay. This means the prediction is 
+                esssentially a Yes/No decision variable. A <strong>Logistic Regression</strong> is used to handle the ~300,000 samples taken from the dataset and ensures
+                randomisation and avoiding over-fitting the data. <br>
+                Because the numerical weather variables have vastly different scales (the average for wind might be 36km/h, while the average for rain could be 3.6ml/m²), 
+                <strong>StandardScaler</strong> is used to standardise the variables by creating the same mean of 0 and a standard deviation of 1, so the model won't weigh them differently. 
+                <br>
+
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Correlation Analysis</h3>
+            <p>
+                Data is sourced from open-source data, such as the U.S. Bureau of Statistics and the National Centers for 
+                Environmental Information. Relevant indicators, such as time of departure/arrival and climate data are isolated. <br>
+                A simple correlation analysis shows how similar the variables are to each other. Correlation
+                is necessary to ensure machine learning can find differences in data structures upon which it differentiates and categorises it later on. Below you can see which 
+                variables fit those criteria. The correlation test was only done for one month (February 2026) for the John F. Kennedy Airport (JFK) in New York, however, has
+                later been verified in the extended timeframe with more data entries and remains robust. 
+            </p>
+
+            <!-- Side-by-side Layout with moderate, balanced sizing -->
+            <div class="figure-download-row">
+                <figure class="correlation-figure">
+                    <img src="corr_heatmap_dark.png" alt="Correlation Analysis - Dark Mode" class="theme-img-dark">
+                    <img src="corr_heatmap_light.png" alt="Correlation Analysis - Light Mode" class="theme-img-light">
+                    <figcaption>Figure 1: Correlation Analysis of Flight Logs and Weather Statistics.</figcaption>
+                </figure>
+
+                <div class="download-action-container">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">Inspect or download data set</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Access the underlying processing and correlation analysis script below, or download the raw files directly.
+                    </p>
+                    <a href="correlation_data.r" class="btn-action" download>↓ Download .R</a>
+                </div>
+            </div>
+
+            <!-- Drop-down code menu styled as an R Console -->
+<details class="r-console-dropdown">
+    <summary>View R Script Execution</summary>
+    <div class="r-console-scroll-container">
+        <pre><code># Load required libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+
+us_flight_data <- read_csv("us_flight_data.csv")
+us_weather_data <- read_csv("us_weather_data.csv")
+
+# filter for date (February 2026)
+jfk_weather <- us_weather_data %>%
+  filter(station_id == "USW00094789", date >= 20260201, date <= 20260228) %>%
+  mutate(DAY_OF_MONTH = date %% 100)
+
+feb_flights <- us_flight_data %>%
+  filter(YEAR == 2026, MONTH == 2)
+
+weather_wide <- jfk_weather %>%
+  pivot_wider(id_cols = DAY_OF_MONTH, names_from = element, values_from = value)
+
+# daily mean departure delays from JFK
+# I aggregate by day to avoid copies of the same data entries, though the 
+# trade-off here is sample size (N=28 for every day)
+# analysis for 6-months and multiple airports confirm the correlation results
+jfk_dep <- feb_flights %>%
+  filter(ORIGIN == "JFK") %>%
+  group_by(DAY_OF_MONTH) %>%
+  # here the median is used to avoid distortion of data due to outliers (think a
+  # single delay of 3 hours)
+   summarise(mean_dep_delay = median(DEP_DELAY, na.rm = TRUE))
+
+# daily mean arrival delays to JFK
+jfk_arr <- feb_flights %>%
+  filter(DEST == "JFK") %>%
+  group_by(DAY_OF_MONTH) %>%
+  summarise(mean_arr_delay = median(ARR_DELAY, na.rm = TRUE))
+
+jfk_analysis <- weather_wide %>%
+  inner_join(jfk_dep, by = "DAY_OF_MONTH") %>%
+  inner_join(jfk_arr, by = "DAY_OF_MONTH")
+
+# cumulative indicators
+jfk_interactions <- jfk_analysis %>%
+  mutate(
+    # Wind + Rain (Combined wet and windy conditions)
+    wind_plus_rain = AWND + PRCP,
+    
+    # Rain + TMin (Wet and cold conditions)
+    rain_plus_tmin = PRCP + TMIN,
+    
+    # Snow + TMin (Deep winter / sub-zero snowy conditions)
+    snow_plus_tmin = SNOW + TMIN,
+    
+    # Multi-hazard composite: Rain + Snow + TMin (Severe winter storm index)
+    rain_snow_tmin = PRCP + SNOW + TMIN
+  )
+
+# narrow down to just the variables going into the correlation matrix
+selected_vars_flight <- jfk_interactions %>%
+  select(any_of(c("mean_dep_delay", "mean_arr_delay", "PRCP", "SNOW", "TMIN", "TMAX", "AWND", 
+                  "wind_plus_rain", "rain_plus_tmin", "snow_plus_tmin", "rain_snow_tmin")))
+
+# calculation of Pearson's r across all variables (weather-vs-weather,
+# delay-vs-delay, and weather-vs-delay all included)
+comprehensive_cor_matrix <- cor(selected_vars_flight, use = "pairwise.complete.obs")
+
+# keep only the upper triangle + diagonal so each pair (e.g. PRCP vs SNOW)
+# appears once instead of twice (mirrored) in the melted/plotted output
+cor_matrix_triangle <- comprehensive_cor_matrix
+cor_matrix_triangle[lower.tri(cor_matrix_triangle)] <- NA
+
+cor_melted_full <- melt(cor_matrix_triangle, na.rm = TRUE)
+names(cor_melted_full) <- c("Var1", "Var2", "value")
+
+print(cor_melted_full)</code></pre>
+    </div>
+</details>
+            <br>
+
+            <p> Now using RandomForest, a correlation analysis is technically not necessary because 
+                RandomForest models are mathematically robust to multicollinearity, however, I still like to
+                inspect to to see if multiple feature are highly correlated. RandomForest will split feature 
+                importance between highly correlated features and artifially lower them. So, looking at highly 
+                correlated variables kets me know which variables to remove to reduce memory usage (though this 
+                is of course optional, the model will still work fine regardless). 
+            </p>
+        </div>
+        <div class="card">
+            <h3>Machine Learning</h3>
+            <p>
+                The goal with this project is to predict flight delays using weather. Of course, a major
+                predictor of flight delays upon arrival is flight delay upon departure, i.e. the best predictor
+                for whether or not a flight will arrive delayed at its destination is if it left its origin airport 
+                already delayed. <br>
+                The weather model focuses on any flights to an arrival airport with more than 15 minutes of delay. While the 
+                code is a lot longer due to data wrangling, the actual machine learning model is rather short. 80% of the 
+                data is used for training, while the remaining data is used for testing the model. Most importantly,the RandomForest 
+                ensemble is built from 100 independent decision trees. Unlike Deutsche Bahn, a minorty if flights are delayed, so a balanced
+                class weight ensures the model treats both on-time and delayed flights as equally important. This machine learning project is of 
+                course a binary count of flight delays (yes or no); while the U.S. Bureau of Statistics also records exact amount of delays, 
+                a next step would seeing how accurate predictions of flight delays can be. For now, any flight delayed more than 15 minutes is 
+                basically the same, irrepsective of the exact amount of delay, whether that would be 20 or 280 minutes. In the world of aviation, 
+                these two flights are of course not equal.
+                <br>
+                Data from 2-days prior (e.g. 5th and 6th of January) is used to predict wether or not a flight is delayed (e.g. for January 7th).
+                Of course not only the weather at the destination airport matters, but also at the origin airport. So an aeroplane leaving LAX to JFK 
+                both be impacted by weather anomalies in at LAX and at JFK, and this is accounted for in the model.   
+                <br>
+                Since this model relies exclusively on weather data, it will naturally never reach 100% (or even 90%) accuracy. Flight delays are driven by a massive web 
+                of non-weather factors—such as air traffic control congestion, mechanical failures, crew scheduling issues, and airline turnaround times.
+                However, it is fascinating to see how strong of a predictor weather actually is on its own, providing a clear signal of environmental
+                disruption across the US airspace.
+                The overall proportion of correct delay and non-delay predictions (Accuracy) is 64.38%. Out of all flights the model flagged as weather-risky, 
+                about 22% actually experienced a delay. The model successfully captures roughly a third of all actual weather-driven delays. The model has
+                an F1 Score of 25.93% compared to the baseline delay rate of 19.3%. 
+            </p>
+            <!-- PyCharm Styled Python Code Section for Model Pipeline -->
+<div class="pycharm-editor">
+    <div class="pycharm-header">
+        <div class="pycharm-window-controls">
+            <span class="pycharm-dot pycharm-dot-red"></span>
+            <span class="pycharm-dot pycharm-dot-yellow"></span>
+            <span class="pycharm-dot pycharm-dot-green"></span>
+        </div>
+        <span>flights_delay.py - PyCharm</span>
+        <span style="opacity: 0.6; font-size: 0.65rem;">Python 3.11</span>
+    </div>
+    <div class="pycharm-tabs">
+        <div class="pycharm-tab active">
+            <span>🐍</span> model_pipeline.py
+        </div>
+    </div>
+    <div class="pycharm-body">
+        <div class="pycharm-gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16</div>
+        <div class="pycharm-code-content"><code><span class="py-keyword">import</span> pandas <span class="py-keyword">as</span> pd
+
+<span class="py-keyword">from</span> sklearn.pipeline <span class="py-keyword">import</span> Pipeline
+<span class="py-keyword">from</span> sklearn.preprocessing <span class="py-keyword">import</span> StandardScaler
+<span class="py-keyword">from</span> sklearn.linear_model <span class="py-keyword">import</span> LogisticRegression
+<span class="py-keyword">from</span> sklearn.metrics <span class="py-keyword">import</span> (
+    accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+)
+
+january = pd.read_csv(<span class="py-string">"january_flights_with_weather.csv"</span>)
+february = pd.read_csv(<span class="py-string">"february_flights_with_weather.csv"</span>)
+
+features = [
+    <span class="py-string">"ORIGIN_AWND_lag1"</span>, <span class="py-string">"ORIGIN_AWND_lag2"</span>, <span class="py-string">"ORIGIN_PRCP_lag1"</span>, <span class="py-string">"ORIGIN_PRCP_lag2"</span>,
+    <span class="py-string">"ORIGIN_TMIN_lag1"</span>, <span class="py-string">"ORIGIN_TMIN_lag2"</span>, <span class="py-string">"ORIGIN_TMAX_lag1"</span>, <span class="py-string">"ORIGIN_TMAX_lag2"</span>,
+    <span class="py-string">"ORIGIN_SNOW_lag1"</span>, <span class="py-string">"ORIGIN_SNOW_lag2"</span>, <span class="py-string">"DEST_AWND_lag1"</span>, <span class="py-string">"DEST_AWND_lag2"</span>,
+    <span class="py-string">"DEST_PRCP_lag1"</span>, <span class="py-string">"DEST_PRCP_lag2"</span>, <span class="py-string">"DEST_TMIN_lag1"</span>, <span class="py-string">"DEST_TMIN_lag2"</span>,
+    <span class="py-string">"DEST_TMAX_lag1"</span>, <span class="py-string">"DEST_TMAX_lag2"</span>, <span class="py-string">"DEST_SNOW_lag1"</span>, <span class="py-string">"DEST_SNOW_lag2"</span>
+]
+
+<span class="py-keyword">for</span> df <span class="py-keyword">in</span> [january, february]:
+    df[<span class="py-string">"IS_DELAYED"</span>] = (pd.to_numeric(df[<span class="py-string">"ARR_DELAY"</span>], errors=<span class="py-string">"coerce"</span>) &gt;= <span class="py-number">15</span>).astype(<span class="py-keyword">int</span>)
+    df.dropna(subset=features + [<span class="py-string">"IS_DELAYED"</span>], inplace=<span class="py-keyword">True</span>)
+
+X_train, y_train = january[features], january[<span class="py-string">"IS_DELAYED"</span>]
+X_test, y_test = february[features], february[<span class="py-string">"IS_DELAYED"</span>]
+
+model = Pipeline([
+    (<span class="py-string">"scaler"</span>, StandardScaler()),
+    (<span class="py-string">"classifier"</span>, LogisticRegression(class_weight=<span class="py-string">"balanced"</span>, random_state=<span class="py-number">42</span>, max_iter=<span class="py-number">1000</span>))
+])
+
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print(<span class="py-string">f"Accuracy:  {accuracy:.2%}"</span>)
+print(<span class="py-string">f"Precision: {precision:.2%}"</span>)
+print(<span class="py-string">f"Recall:    {recall:.2%}"</span>)
+print(<span class="py-string">f"F1 Score:  {f1:.2%}"</span>)</code></div>
+    </div>
+</div>
+ <div class="download-action-container">
+            <p> Above you can see the visualised results of this process.</p>
+                    <a href="flights_delay.py" class="btn-action" download>↓ Download .py</a>
+                </div>
+        </div>
+        <div class="card">
+            <h3> How to deal with memory issues</h3>
+            <p>
+                While cleaning the data, I ran into the problem that the datasets were too large to effectively clean and reorder the variables. Initially, because there are about 16 million entries in the weather dataset, this was my first solution for the limited memory problem. I figuured 
+                splitting the data into chunks would be enough to make sure the data can load effienctly:
+            </p>
+
+           <!-- PyCharm Styled Python Code Section for Memory Issues Pre-Fix-->
+            <div class="pycharm-editor">
+                <div class="pycharm-header">
+                    <div class="pycharm-window-controls">
+                        <span class="pycharm-dot pycharm-dot-red"></span>
+                        <span class="pycharm-dot pycharm-dot-yellow"></span>
+                        <span class="pycharm-dot pycharm-dot-green"></span>
+                    </div>
+                    <span>memory.py - PyCharm</span>
+                    <span style="opacity: 0.6; font-size: 0.65rem;">Python 3.11</span>
+                </div>
+                <div class="pycharm-tabs">
+                    <div class="pycharm-tab active">
+                        <span>🐍</span> memory.py
+                    </div>
+                </div>
+                <div class="pycharm-body">
+                    <div class="pycharm-gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</div>
+                    <div class="pycharm-code-content"><code><span class="py-keyword">import</span> pandas <span class="py-keyword">as</span> pd
+
+flight_chunks = []
+
+<span class="py-keyword">for</span> chunk <span class="py-keyword">in</span> pd.<span class="py-function">read_csv</span>(flights_path, chunksize=<span class="py-number">50_000</span>):
+    chunk = chunk[(chunk[<span class="py-string">"YEAR"</span>] == <span class="py-number">2026</span>) & (chunk[<span class="py-string">"MONTH"</span>].<span class="py-function">between</span>(<span class="py-number">1</span>, <span class="py-number">2</span>))]
+    <span class="py-keyword">if</span> <span class="py-keyword">not</span> chunk.empty:
+        flight_chunks.<span class="py-function">append</span>(chunk)
+
+flights = pd.<span class="py-function">concat</span>(flight_chunks, ignore_index=<span class="py-keyword">True</span>)
+
+<span class="py-keyword">del</span> flight_chunks</code></div>
+                </div>
+            </div>
+
+            <p>
+                However, as you can probably tell, while the data will load, it will do so very slowly and eventually, will be out of memory. 
+                The problem faced here is that to know which rows and data to discard, they still have to be read and materialised in memory. To avoid this,
+                I use DuckDB, which discards unnecessary data while reading it:
+            </p>
+<!-- PyCharm Styled Python Code Section for Memory Issues Post-Fix-->
+            <div class="pycharm-editor">
+                <div class="pycharm-header">
+                    <div class="pycharm-window-controls">
+                        <span class="pycharm-dot pycharm-dot-red"></span>
+                        <span class="pycharm-dot pycharm-dot-yellow"></span>
+                        <span class="pycharm-dot pycharm-dot-green"></span>
+                    </div>
+                    <span>memory.py - PyCharm</span>
+                    <span style="opacity: 0.6; font-size: 0.65rem;">Python 3.11</span>
+                </div>
+                <div class="pycharm-tabs">
+                    <div class="pycharm-tab active">
+                        <span>🐍</span> memory.py
+                    </div>
+                </div>
+                <div class="pycharm-body">
+                    <div class="pycharm-gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+                    <div class="pycharm-code-content"><code><span class="py-keyword">import</span> duckdb <span class="py-keyword"></span>
+
+flights = duckdb.query(<span class="py-string">f"""
+    SELECT YEAR, MONTH, DAY_OF_MONTH, ORIGIN, DEST, ARR_DELAY,
+    from read_csv_auto('</span><span class=py-keyword>{</span>flights_path<span class=py-keyword>}</span><span class=py-string>')
+    WHERE YEAR = 2026 AND MONTH BETWEEN 1 AND 2
+"""</span>).to.df()
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <p>© 2026 Sophie Schöneberg. All rights reserved.</p>
+        <p><strong>Independent Project</strong> Documentation.</p>
+        <div class="legal-disclaimer">
+            <strong>Legal Disclaimer:</strong> All original works, text, code, and project frameworks presented on this portfolio are the exclusive intellectual property of the author unless otherwise stated. 
+        </div>
+    </footer>
+
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('theme-btn');
+
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                btn.textContent = '☾ DARK';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀ LIGHT';
+            }
+        }
+    </script>
+</body>
+</html>
