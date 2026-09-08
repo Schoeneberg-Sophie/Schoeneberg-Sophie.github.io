@@ -1,0 +1,1456 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Resume | Sophie Schöneberg</title>
+
+<!-- Google Fonts -->
+<link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+    /* =================================
+       THEME VARIABLES
+       ================================= */
+
+    :root {
+        --bg-color: #000000;
+        --bg-secondary: #000000;
+        --card-bg: #050505;
+
+        --text-main: #ffffff;
+        --text-muted: #d4d4d4;
+
+        --accent-color: #00a4ef;
+        --accent-bright: #0078d4;
+        --accent-glow: rgba(0, 164, 239, 0.18);
+
+        --border-color: #333333;
+        --border-strong: #666666;
+
+        --shadow-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* =================================
+       GLOBAL
+       ================================= */
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'JetBrains Mono', monospace;
+
+        background: #000000;
+
+        color: var(--text-main);
+
+        line-height: 1.6;
+
+        padding: 0 1.25rem 2rem;
+
+        min-height: 100vh;
+    }
+
+    /* =================================
+       POWER SHELL TERMINAL
+       ================================= */
+
+    .cctv-monitor {
+
+        max-width: 1240px;
+
+        margin: 1rem auto 0;
+
+        position: sticky;
+
+        top: 0.75rem;
+
+        z-index: 100;
+
+        border: 1px solid #333333;
+
+        border-radius: 3px;
+
+        background: #000000;
+
+        box-shadow:
+            0 12px 35px rgba(0, 0, 0, 0.8);
+
+        overflow: hidden;
+    }
+
+    /* =================================
+       TERMINAL TITLE BAR
+       ================================= */
+
+    .monitor-top {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        height: 32px;
+
+        padding: 0 0.7rem;
+
+        background: #111111;
+
+        color: #dcdcdc;
+
+        font-family: 'Segoe UI', Arial, sans-serif;
+
+        font-size: 0.75rem;
+
+        border-bottom: 1px solid #333333;
+    }
+
+    .monitor-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.55rem;
+    }
+
+    .ps-icon {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 17px;
+
+        height: 17px;
+
+        color: #00a4ef;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 10px;
+
+        font-weight: bold;
+    }
+
+    /* =================================
+       WINDOW CONTROLS
+       ================================= */
+
+    .window-controls {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+    }
+
+    .window-dot {
+
+        width: 7px;
+
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #555555;
+    }
+
+    /* =================================
+       TERMINAL BODY
+       ================================= */
+
+    .terminal-body {
+
+        padding: 0.85rem 1rem;
+
+        background: #000000;
+
+        color: #ffffff;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 0.82rem;
+
+        height: 145px;
+
+        min-height: 145px;
+
+        max-height: 145px;
+
+        overflow: hidden;
+
+        cursor: text;
+    }
+
+    .terminal-output {
+
+        margin-bottom: 0.35rem;
+
+        line-height: 1.45;
+    }
+
+    /* =================================
+       COMMAND COLORS
+       ================================= */
+
+    .command-list {
+
+        color: #00a4ef;
+
+        font-weight: 700;
+    }
+
+    .command-highlight {
+
+        color: #00a4ef;
+
+        font-weight: 700;
+    }
+
+    /* =================================
+       TERMINAL INPUT
+       ================================= */
+
+    .terminal-input-line {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.45rem;
+
+        white-space: nowrap;
+    }
+
+    .prompt {
+
+        color: #ffffff;
+
+        font-weight: normal;
+
+        white-space: nowrap;
+    }
+
+    .terminal-input-line input {
+
+        background: transparent;
+
+        border: none;
+
+        outline: none;
+
+        color: #ffffff;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 0.82rem;
+
+        width: 100%;
+    }
+
+    .terminal-input-line input::placeholder {
+
+        color: #555555;
+    }
+
+    /* =================================
+       MAIN CONTAINER
+       ================================= */
+
+    .container {
+
+        max-width: 1100px;
+
+        margin: 2rem auto 0;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+    /* =================================
+       HEADER
+       ================================= */
+
+    header {
+
+        text-align: center;
+
+        margin-bottom: 3rem;
+
+        padding: 2rem 1rem 2rem;
+
+        border-bottom: 1px dashed var(--border-color);
+    }
+
+    header h1 {
+
+        font-size: clamp(2rem, 5vw, 3.5rem);
+
+        line-height: 1.1;
+
+        margin-bottom: 0.65rem;
+
+        font-weight: 700;
+    }
+
+    header h1 span {
+
+        color: var(--accent-color);
+    }
+
+    header > p {
+
+        font-size: 0.9rem;
+
+        color: var(--text-muted);
+
+        max-width: 700px;
+
+        margin: 0 auto;
+    }
+
+    /* =================================
+       CONTACT INFORMATION
+       ================================= */
+
+    .contact-info {
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        flex-wrap: wrap;
+
+        gap: 0.8rem 1.25rem;
+
+        margin-top: 0.9rem;
+
+        font-size: 0.78rem;
+    }
+
+    .contact-info a {
+
+        color: var(--text-main);
+
+        text-decoration: none;
+
+        transition: color 0.15s ease;
+    }
+
+    .contact-info a:hover {
+
+        color: var(--accent-color);
+
+        text-decoration: underline;
+    }
+
+    .contact-item::before {
+
+        content: "> ";
+
+        color: var(--accent-color);
+    }
+
+    /* =================================
+       BADGES
+       ================================= */
+
+    .badges {
+
+        margin-top: 1.1rem;
+    }
+
+    .badge {
+
+        display: inline-block;
+
+        padding: 0.25rem 0.55rem;
+
+        border-radius: 2px;
+
+        font-size: 0.65rem;
+
+        font-weight: 600;
+
+        margin: 0.2rem;
+
+        background: #050505;
+
+        color: var(--accent-color);
+
+        border: 1px solid var(--border-color);
+    }
+
+    /* =================================
+       SECTIONS
+       ================================= */
+
+    section {
+
+        margin-bottom: 3rem;
+    }
+
+    h2 {
+
+        font-size: 1.15rem;
+
+        margin-bottom: 1rem;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.65rem;
+
+        color: var(--accent-color);
+    }
+
+    h2::before {
+
+        content: "[+]";
+
+        font-size: 0.9rem;
+    }
+
+    h2::after {
+
+        content: "";
+
+        height: 1px;
+
+        flex: 1;
+
+        background: var(--border-color);
+    }
+
+    /* =================================
+       RESUME ENTRIES
+       ================================= */
+
+    .entry {
+
+        background: var(--card-bg);
+
+        border: 1px solid var(--border-color);
+
+        border-radius: 2px;
+
+        padding: 1.2rem 1.35rem;
+
+        box-shadow:
+            0 3px 12px var(--shadow-color);
+
+        position: relative;
+
+        transition:
+            border-color 0.15s ease,
+            transform 0.15s ease;
+
+        margin-bottom: 0.9rem;
+    }
+
+    .entry:hover {
+
+        border-color: var(--accent-color);
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 5px 18px var(--accent-glow);
+    }
+
+    .entry-head {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: baseline;
+
+        flex-wrap: wrap;
+
+        gap: 0.5rem;
+
+        margin-bottom: 0.35rem;
+    }
+
+    .entry-title {
+
+        font-size: 0.95rem;
+
+        font-weight: 700;
+
+        color: var(--text-main);
+    }
+
+    .entry-title::before {
+
+        content: ">> ";
+
+        color: var(--accent-color);
+    }
+
+    .entry-date {
+
+        font-size: 0.7rem;
+
+        color: var(--accent-color);
+
+        white-space: nowrap;
+    }
+
+    .entry-sub {
+
+        color: var(--text-muted);
+
+        font-size: 0.75rem;
+
+        margin-bottom: 0.75rem;
+    }
+
+    .entry ul {
+
+        color: var(--text-muted);
+
+        font-size: 0.76rem;
+
+        padding-left: 1.2rem;
+    }
+
+    .entry ul li {
+
+        margin-bottom: 0.35rem;
+    }
+
+    .entry ul li::marker {
+
+        color: var(--accent-color);
+    }
+
+    .entry p {
+
+        color: var(--text-muted);
+
+        font-size: 0.76rem;
+
+        line-height: 1.55;
+    }
+
+    /* =================================
+       SKILLS
+       ================================= */
+
+    .skills-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(auto-fit, minmax(230px, 1fr));
+
+        gap: 0.9rem;
+    }
+
+    .skill-card {
+
+        background: var(--card-bg);
+
+        border: 1px solid var(--border-color);
+
+        border-radius: 2px;
+
+        padding: 1rem 1.15rem;
+
+        box-shadow:
+            0 3px 12px var(--shadow-color);
+
+        transition:
+            border-color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .skill-card:hover {
+
+        border-color: var(--accent-color);
+
+        transform: translateY(-2px);
+    }
+
+    .skill-card h3 {
+
+        font-size: 0.85rem;
+
+        margin-bottom: 0.7rem;
+
+        color: var(--text-main);
+    }
+
+    .tag-row {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 0.35rem;
+    }
+
+    .tag {
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 0.63rem;
+
+        padding: 0.25rem 0.5rem;
+
+        border-radius: 2px;
+
+        border: 1px solid var(--border-color);
+
+        color: var(--accent-color);
+
+        background: #050505;
+    }
+
+    /* =================================
+       FOOTER
+       ================================= */
+
+    footer {
+
+        text-align: center;
+
+        color: var(--text-muted);
+
+        font-size: 0.65rem;
+
+        margin-top: 3rem;
+
+        border-top: 1px dashed var(--border-color);
+
+        padding-top: 1.25rem;
+    }
+
+    footer p {
+
+        margin-bottom: 0.4rem;
+    }
+
+    footer strong {
+
+        color: var(--accent-color);
+    }
+
+    /* =================================
+       PRINT
+       ================================= */
+
+    @media print {
+
+        .cctv-monitor {
+            display: none;
+        }
+
+        body {
+
+            background: #ffffff;
+
+            color: #111111;
+        }
+
+        .entry,
+        .skill-card {
+
+            box-shadow: none;
+
+            border: 1px solid #cccccc;
+        }
+    }
+
+    /* =================================
+       MOBILE
+       ================================= */
+
+    @media (max-width: 800px) {
+
+        body {
+
+            padding: 0 0.75rem 1.5rem;
+        }
+
+        .cctv-monitor {
+
+            margin-top: 0.5rem;
+
+            position: relative;
+
+            top: 0;
+        }
+
+        .skills-grid {
+
+            grid-template-columns: 1fr;
+        }
+
+        .contact-info {
+
+            flex-direction: column;
+
+            gap: 0.35rem;
+        }
+
+        header {
+
+            padding-top: 1.5rem;
+        }
+    }
+
+</style>
+
+</head> <body>
+
+<!-- =================================
+     POWER SHELL TERMINAL
+     ================================= -->
+
+<nav class="cctv-monitor">
+
+    <div class="monitor-top">
+
+        <div class="monitor-title">
+
+            <span class="ps-icon">
+                PS&gt;
+            </span>
+
+            <span>
+                Portfolio Terminal
+            </span>
+
+        </div>
+
+        <div class="window-controls">
+
+            <span class="window-dot"></span>
+            <span class="window-dot"></span>
+            <span class="window-dot"></span>
+
+        </div>
+
+    </div>
+
+    <div
+        class="terminal-body"
+        id="terminal-body"
+        onclick="document.getElementById('terminal-input').focus()"
+    >
+
+        <div class="terminal-output">
+
+            Portfolio Terminal<br><br>
+
+            Current page:
+            <span class="command-highlight">
+                resume
+            </span>
+
+            <br><br>
+
+            Available commands:
+            <span class="command-list">
+                home&nbsp;&nbsp; aboutme
+            </span>
+
+            <br>
+
+            Type
+            <span class="command-highlight">help</span>
+            for more options.<br><br>
+
+        </div>
+
+        <div class="terminal-input-line">
+
+            <span class="prompt">
+                PS C:\Portfolio&gt;
+            </span>
+
+            <input
+                type="text"
+                id="terminal-input"
+                autofocus
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="PowerShell command input"
+            >
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- =================================
+     MAIN CONTENT
+     ================================= -->
+
+<div class="container">
+
+    <!-- =================================
+         HEADER
+         ================================= -->
+
+    <header>
+
+        <h1>
+            Sophie
+            <span>Schöneberg</span>
+        </h1>
+
+        <p>
+            Data Science Master's Student at the University of Mannheim.
+        </p>
+
+        <div class="contact-info">
+
+            <span class="contact-item">
+
+                <a href="mailto:sophie.schoeneberg@protonmail.com">
+                    sophie.schoeneberg@protonmail.com
+                </a>
+
+            </span>
+
+            <span class="contact-item">
+
+                <a
+                    href="https://github.com/Schoeneberg-Sophie"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub
+                </a>
+
+            </span>
+
+            <span class="contact-item">
+
+                <a
+                    href="https://linkedin.com/in/sophie-schöneberg-71476b298"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    LinkedIn
+                </a>
+
+            </span>
+
+        </div>
+
+        <div class="badges">
+
+            <span class="badge">
+                SECURITY MANAGEMENT
+            </span>
+
+            <span class="badge">
+                DATA SCIENCE & ANALYTICS
+            </span>
+
+            <span class="badge">
+                MACHINE LEARNING
+            </span>
+
+        </div>
+
+    </header>
+
+    <!-- =================================
+         PROFILE SUMMARY
+         ================================= -->
+
+    <section id="summary">
+
+        <h2>
+            Profile Summary
+        </h2>
+
+        <div class="entry">
+
+            <p>
+                I am a student data analyst passionate about security
+                intelligence and operational risk management, with a
+                specific focus on critical infrastructure and supply
+                chain resilience. Using Python and R, I enjoy working
+                with operational data to build predictive models that
+                help identify system vulnerabilities and disruptions.
+                I am eager to secure an entry-level role or internship
+                where I can apply data science to protect and optimise
+                complex physical networks.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =================================
+         EXPERIENCE
+         ================================= -->
+
+    <section id="experience">
+
+        <h2>
+            Experience
+        </h2>
+
+        <div class="entry">
+
+            <div class="entry-head">
+
+                <span class="entry-title">
+                    Research Assistant
+                </span>
+
+                <span class="entry-date">
+                    03/2024 – Present
+                </span>
+
+            </div>
+
+            <div class="entry-sub">
+                University of Mannheim — Mannheim, Germany
+            </div>
+
+            <ul>
+
+                <li>
+                    Research for a database using open-source
+                    information on private security companies,
+                    paramilitaries, and pro-government militias
+                    (PGMD 2.0), with a focus on the MENA region,
+                    Sub-Saharan Africa, and Asia.
+                </li>
+
+                <li>
+                    Coding of more than 200 individual groups.
+                </li>
+
+                <li>
+                    Implementation of AI integration.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+    <!-- =================================
+         EDUCATION
+         ================================= -->
+
+    <section id="education">
+
+        <h2>
+            Education
+        </h2>
+
+        <div class="entry">
+
+            <div class="entry-head">
+
+                <span class="entry-title">
+                    M.Sc. Data Science
+                </span>
+
+                <span class="entry-date">
+                    08/2026 – Present
+                </span>
+
+            </div>
+
+            <div class="entry-sub">
+                University of Mannheim — Mannheim, Germany
+            </div>
+
+            <ul>
+
+                <li>
+                    Relevant coursework:
+                    Data Mining, Statistics, Machine Learning.
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="entry">
+
+            <div class="entry-head">
+
+                <span class="entry-title">
+                    B.A. Political Science
+                </span>
+
+                <span class="entry-date">
+                    08/2023 – 07/2026
+                </span>
+
+            </div>
+
+            <div class="entry-sub">
+                University of Mannheim — Mannheim, Germany
+            </div>
+
+            <ul>
+
+                <li>
+                    Relevant coursework:
+                    Statistics, Data Analysis, Computational Analysis,
+                    Applied Causal Inference, Excel, Political Violence.
+                </li>
+
+                <li>
+                    Thesis:
+                    Security Dilemma in Space: Quantitative Analysis
+                    of Worldwide Procurement of Dual-Use Satellites.
+                </li>
+
+                <li>
+                    Relevant term papers:
+                    Patterns of Regime Criticism of Pro-Beijing and
+                    Independent News Outlets: Sentiment Analysis;
+                    Impacts of Decentralisation on Electoral Violence:
+                    A Case Study of Kenyan Reforms.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+    <!-- =================================
+         SKILLS
+         ================================= -->
+
+    <section id="skills">
+
+        <h2>
+            Skills
+        </h2>
+
+        <div class="skills-grid">
+
+            <div class="skill-card">
+
+                <h3>
+                    Programming & Tools
+                </h3>
+
+                <div class="tag-row">
+
+                    <span class="tag">Python</span>
+                    <span class="tag">R</span>
+                    <span class="tag">Pandas</span>
+                    <span class="tag">Scikit-learn</span>
+                    <span class="tag">Excel</span>
+                    <span class="tag">Tidyverse</span>
+
+                </div>
+
+            </div>
+
+            <div class="skill-card">
+
+                <h3>
+                    Data & Analytics
+                </h3>
+
+                <div class="tag-row">
+
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">Geospatial Analysis</span>
+                    <span class="tag">Risk Modeling</span>
+
+                </div>
+
+            </div>
+
+            <div class="skill-card">
+
+                <h3>
+                    Security Domain
+                </h3>
+
+                <div class="tag-row">
+
+                    <span class="tag">Risk Assessment</span>
+                    <span class="tag">Threat Intelligence</span>
+                    <span class="tag">OSINT Analysis</span>
+
+                </div>
+
+            </div>
+
+            <div class="skill-card">
+
+                <h3>
+                    Languages
+                </h3>
+
+                <div class="tag-row">
+
+                    <span class="tag">
+                        German (Native)
+                    </span>
+
+                    <span class="tag">
+                        English (Fluent)
+                    </span>
+
+                    <span class="tag">
+                        Spanish (Fluent)
+                    </span>
+
+                    <span class="tag">
+                        Latin (Diploma Latinum)
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =================================
+         CERTIFICATIONS
+         ================================= -->
+
+    <section id="certifications">
+
+        <h2>
+            Certifications
+        </h2>
+
+        <div class="entry">
+
+            <div class="entry-head">
+
+                <span class="entry-title">
+                    IELTS C1 Academic English
+                </span>
+
+                <span class="entry-date">
+                    2024
+                </span>
+
+            </div>
+
+            <div class="entry-sub">
+                British Council
+            </div>
+
+        </div>
+
+        <div class="entry">
+
+            <div class="entry-head">
+
+                <span class="entry-title">
+                    Diploma de Español C1.1
+                </span>
+
+                <span class="entry-date">
+                    2023
+                </span>
+
+            </div>
+
+            <div class="entry-sub">
+                Proyecto Español Alicante
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =================================
+         FOOTER
+         ================================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Sophie Schöneberg.
+            All rights reserved.
+        </p>
+
+        <p>
+            Built with HTML & hosted on GitHub Pages.
+        </p>
+
+    </footer>
+
+</div>
+
+<!-- =================================
+     TERMINAL JAVASCRIPT
+     ================================= -->
+
+<script>
+
+    const terminalInput =
+        document.getElementById(
+            'terminal-input'
+        );
+
+    const terminalOutput =
+        document.querySelector(
+            '.terminal-output'
+        );
+
+    if (terminalInput) {
+
+        terminalInput.addEventListener(
+            'keydown',
+            function(e) {
+
+                if (e.key !== 'Enter') {
+                    return;
+                }
+
+                const rawCommand =
+                    terminalInput.value.trim();
+
+                const cmd =
+                    rawCommand.toLowerCase();
+
+                const commandLine =
+                    `<br>
+                    <span class="prompt">
+                        PS C:\\Portfolio&gt;
+                    </span>
+                    ${escapeHtml(rawCommand)}`;
+
+                let response = '';
+
+                /* ==========================
+                   HOME
+                   ========================== */
+
+                if (
+                    cmd === 'home' ||
+                    cmd === 'index' ||
+                    cmd === 'index.html'
+                ) {
+
+                    response =
+                        '<br>Opening index.html...';
+
+                    terminalOutput.innerHTML +=
+                        commandLine +
+                        response;
+
+                    terminalInput.value = '';
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                'index.html';
+
+                        },
+                        400
+                    );
+
+                    return;
+                }
+
+                /* ==========================
+                   ABOUT ME
+                   ========================== */
+
+                else if (
+                    cmd === 'aboutme' ||
+                    cmd === 'about'
+                ) {
+
+                    response =
+                        '<br>Opening about.html...';
+
+                    terminalOutput.innerHTML +=
+                        commandLine +
+                        response;
+
+                    terminalInput.value = '';
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                'about.html';
+
+                        },
+                        400
+                    );
+
+                    return;
+                }
+
+                /* ==========================
+                   HELP
+                   ========================== */
+
+                else if (
+                    cmd === 'help'
+                ) {
+
+                    response = `
+                        <br>
+                        Available commands:<br>
+                        &nbsp;&nbsp;home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Return to home page<br>
+                        &nbsp;&nbsp;aboutme&nbsp;&nbsp;
+                        Open about page<br>
+                        &nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;
+                        Clear terminal<br>
+                    `;
+
+                }
+
+                /* ==========================
+                   CLEAR
+                   ========================== */
+
+                else if (
+                    cmd === 'clear' ||
+                    cmd === 'cls'
+                ) {
+
+                    terminalOutput.innerHTML = `
+                        Portfolio Terminal<br><br>
+
+                        Current page:
+                        <span class="command-highlight">
+                            resume
+                        </span>
+
+                        <br><br>
+
+                        Available commands:
+                        <span class="command-list">
+                            home&nbsp;&nbsp; aboutme
+                        </span>
+
+                        <br>
+
+                        Type
+                        <span class="command-highlight">
+                            help
+                        </span>
+                        for more options.<br><br>
+                    `;
+
+                    terminalInput.value = '';
+
+                    return;
+                }
+
+                /* ==========================
+                   EMPTY COMMAND
+                   ========================== */
+
+                else if (
+                    cmd === ''
+                ) {
+
+                    response = '';
+
+                }
+
+                /* ==========================
+                   UNKNOWN COMMAND
+                   ========================== */
+
+                else {
+
+                    response = `
+                        <br>
+                        '${escapeHtml(rawCommand)}'
+                        is not recognized.
+                        Type 'help' to see available
+                        commands.
+                    `;
+
+                }
+
+                terminalOutput.innerHTML +=
+                    commandLine +
+                    response +
+                    '<br>';
+
+                terminalInput.value = '';
+
+            }
+        );
+
+    }
+
+    /* =================================
+       HTML ESCAPE FUNCTION
+       ================================= */
+
+    function escapeHtml(text) {
+
+        return text
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+</script>
+
+</body> 
+</html>
