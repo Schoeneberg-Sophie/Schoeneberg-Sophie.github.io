@@ -1,0 +1,911 @@
+<!DOCTYPE html> <html lang="en"> <head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>About Me | Sophie Schöneberg</title>
+
+<!-- Google Fonts -->
+<link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+    /* =================================
+       THEME VARIABLES
+       ================================= */
+
+    :root {
+
+        --bg-color: #000000;
+        --bg-secondary: #000000;
+        --card-bg: #050505;
+
+        --text-main: #ffffff;
+        --text-muted: #d4d4d4;
+
+        --accent-color: #00a4ef;
+        --accent-bright: #0078d4;
+        --accent-glow: rgba(0, 164, 239, 0.18);
+
+        --border-color: #333333;
+        --border-strong: #666666;
+
+        --shadow-color: rgba(0, 0, 0, 0.8);
+
+    }
+
+
+    /* =================================
+       GLOBAL
+       ================================= */
+
+    * {
+
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+    }
+
+
+    html {
+
+        scroll-behavior: smooth;
+
+    }
+
+
+    body {
+
+        font-family: 'JetBrains Mono', monospace;
+
+        background: #000000;
+
+        color: var(--text-main);
+
+        line-height: 1.6;
+
+        padding: 0 1.25rem 2rem;
+
+        min-height: 100vh;
+
+    }
+
+
+    /* =================================
+       POWER SHELL TERMINAL
+       ================================= */
+
+    .cctv-monitor {
+
+        max-width: 1240px;
+
+        margin: 1rem auto 0;
+
+        position: sticky;
+
+        top: 0.75rem;
+
+        z-index: 100;
+
+        border: 1px solid #333333;
+
+        border-radius: 3px;
+
+        background: #000000;
+
+        box-shadow:
+            0 12px 35px rgba(0, 0, 0, 0.8);
+
+        overflow: hidden;
+
+    }
+
+
+    /* =================================
+       TERMINAL TITLE BAR
+       ================================= */
+
+    .monitor-top {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        height: 32px;
+
+        padding: 0 0.7rem;
+
+        background: #111111;
+
+        color: #dcdcdc;
+
+        font-family: 'Segoe UI', Arial, sans-serif;
+
+        font-size: 0.75rem;
+
+        border-bottom: 1px solid #333333;
+
+    }
+
+
+    .monitor-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.55rem;
+
+    }
+
+
+    .ps-icon {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 17px;
+
+        height: 17px;
+
+        color: #00a4ef;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 10px;
+
+        font-weight: bold;
+
+    }
+
+
+    /* =================================
+       WINDOW CONTROLS
+       ================================= */
+
+    .window-controls {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+    }
+
+
+    .window-dot {
+
+        width: 7px;
+
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #555555;
+
+    }
+
+
+    /* =================================
+       TERMINAL BODY
+       ================================= */
+
+    .terminal-body {
+
+        padding: 0.85rem 1rem;
+
+        background: #000000;
+
+        color: #ffffff;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 0.82rem;
+
+        height: 145px;
+
+        min-height: 145px;
+
+        max-height: 145px;
+
+        overflow: hidden;
+
+        cursor: text;
+
+    }
+
+
+    .terminal-output {
+
+        margin-bottom: 0.35rem;
+
+        line-height: 1.45;
+
+    }
+
+
+    /* =================================
+       COMMAND COLORS
+       ================================= */
+
+    .command-list {
+
+        color: #00a4ef;
+
+        font-weight: 700;
+
+    }
+
+
+    .command-highlight {
+
+        color: #00a4ef;
+
+        font-weight: 700;
+
+    }
+
+
+    /* =================================
+       TERMINAL INPUT
+       ================================= */
+
+    .terminal-input-line {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.45rem;
+
+        white-space: nowrap;
+
+    }
+
+
+    .prompt {
+
+        color: #ffffff;
+
+        font-weight: normal;
+
+        white-space: nowrap;
+
+    }
+
+
+    .terminal-input-line input {
+
+        background: transparent;
+
+        border: none;
+
+        outline: none;
+
+        color: #ffffff;
+
+        font-family: Consolas, 'Courier New', monospace;
+
+        font-size: 0.82rem;
+
+        width: 100%;
+
+    }
+
+
+    .terminal-input-line input::placeholder {
+
+        color: #555555;
+
+    }
+
+
+    /* =================================
+       MAIN CONTAINER
+       ================================= */
+
+    .container {
+
+        max-width: 1100px;
+
+        margin: 2rem auto 0;
+
+        position: relative;
+
+        z-index: 2;
+
+    }
+
+
+    /* =================================
+       ABOUT CARD
+       ================================= */
+
+    .card {
+
+        background: var(--card-bg);
+
+        border: 1px solid var(--border-color);
+
+        border-radius: 2px;
+
+        padding: 2rem 2.25rem;
+
+        box-shadow:
+            0 3px 12px var(--shadow-color);
+
+        margin-top: 2rem;
+
+        position: relative;
+
+        overflow: hidden;
+
+    }
+
+
+    .card::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+
+        left: 0;
+
+        width: 3px;
+
+        height: 100%;
+
+        background: var(--accent-color);
+
+        opacity: 0.45;
+
+    }
+
+
+    /* =================================
+       HEADINGS
+       ================================= */
+
+    h1 {
+
+        font-size: 2.5rem;
+
+        margin-bottom: 1.5rem;
+
+        color: var(--accent-color);
+
+    }
+
+
+    h2 {
+
+        font-size: 1.15rem;
+
+        margin: 2rem 0 1rem;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.65rem;
+
+        color: var(--accent-color);
+
+    }
+
+
+    h2::before {
+
+        content: "[+]";
+
+        font-size: 0.9rem;
+
+    }
+
+
+    h2::after {
+
+        content: "";
+
+        height: 1px;
+
+        flex: 1;
+
+        background: var(--border-color);
+
+    }
+
+
+    /* =================================
+       TEXT
+       ================================= */
+
+    p {
+
+        color: var(--text-muted);
+
+        font-size: 0.82rem;
+
+        line-height: 1.7;
+
+        margin-bottom: 1.2rem;
+
+    }
+
+
+    /* =================================
+       QUESTIONS
+       ================================= */
+
+    .questions {
+
+        color: var(--text-muted);
+
+        font-size: 0.82rem;
+
+        line-height: 1.7;
+
+    }
+
+
+    .questions p {
+
+        margin-bottom: 0.9rem;
+
+    }
+
+
+    .question {
+
+        color: var(--accent-color);
+
+    }
+
+
+    /* =================================
+       HIGHLIGHT BOX
+       ================================= */
+
+    .highlight-box {
+
+        background: #050505;
+
+        border: 1px solid var(--border-color);
+
+        border-left: 3px solid var(--accent-color);
+
+        border-radius: 2px;
+
+        padding: 1.2rem 1.35rem;
+
+        margin-top: 1.5rem;
+
+        color: var(--text-main);
+
+        font-size: 0.82rem;
+
+        line-height: 1.7;
+
+        box-shadow:
+            0 3px 12px var(--shadow-color);
+
+    }
+
+
+    /* =================================
+       FOOTER
+       ================================= */
+
+    footer {
+
+        text-align: center;
+
+        color: var(--text-muted);
+
+        font-size: 0.65rem;
+
+        margin-top: 3rem;
+
+        border-top: 1px dashed var(--border-color);
+
+        padding-top: 1.25rem;
+
+    }
+
+
+    footer p {
+
+        margin-bottom: 0.4rem;
+
+        font-size: 0.65rem;
+
+    }
+
+
+    footer strong {
+
+        color: var(--accent-color);
+
+    }
+
+
+    /* =================================
+       PRINT
+       ================================= */
+
+    @media print {
+
+        .cctv-monitor {
+
+            display: none;
+
+        }
+
+        body {
+
+            background: #ffffff;
+
+            color: #111111;
+
+        }
+
+        .card {
+
+            box-shadow: none;
+
+            border: 1px solid #cccccc;
+
+        }
+
+    }
+
+
+    /* =================================
+       MOBILE
+       ================================= */
+
+    @media (max-width: 800px) {
+
+        body {
+
+            padding: 0 0.75rem 1.5rem;
+
+        }
+
+
+        .cctv-monitor {
+
+            margin-top: 0.5rem;
+
+            position: relative;
+
+            top: 0;
+
+        }
+
+
+        .card {
+
+            padding: 1.5rem;
+
+        }
+
+
+        h1 {
+
+            font-size: 2rem;
+
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .monitor-top {
+
+            height: auto;
+
+            min-height: 32px;
+
+            padding: 0.45rem 0.7rem;
+
+        }
+
+
+        .terminal-body {
+
+            font-size: 0.72rem;
+
+            padding: 0.75rem;
+
+        }
+
+
+        .terminal-input-line input {
+
+            font-size: 0.72rem;
+
+        }
+
+
+        .prompt {
+
+            font-size: 0.72rem;
+
+        }
+
+
+        .card {
+
+            padding: 1.25rem;
+
+        }
+
+    }
+
+</style>
+
+</head> <body> <!-- ================================= POWER SHELL TERMINAL ================================= --> <nav class="cctv-monitor">
+
+<div class="monitor-top">
+
+    <div class="monitor-title">
+
+        <span class="ps-icon">
+            PS&gt;
+        </span>
+
+        <span>
+            Portfolio Terminal
+        </span>
+
+    </div>
+
+
+    <div class="window-controls">
+
+        <span class="window-dot"></span>
+
+        <span class="window-dot"></span>
+
+        <span class="window-dot"></span>
+
+    </div>
+
+</div>
+
+
+<div
+    class="terminal-body"
+    id="terminal-body"
+    onclick="document.getElementById('terminal-input').focus()"
+>
+
+    <div class="terminal-output">
+
+        Portfolio Terminal<br><br>
+
+        Current page:
+        <span class="command-highlight">
+            aboutme
+        </span>
+
+        <br><br>
+
+        Available commands:
+        <span class="command-list">
+            home&nbsp;&nbsp; resume
+        </span>
+
+        <br>
+
+        Type
+        <span class="command-highlight">help</span>
+        for more options.<br><br>
+
+    </div>
+
+
+    <div class="terminal-input-line">
+
+        <span class="prompt">
+            PS C:\Portfolio&gt;
+        </span>
+
+        <input
+            type="text"
+            id="terminal-input"
+            autofocus
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="PowerShell command input"
+        >
+
+    </div>
+
+</div>
+
+</nav> <!-- ================================= MAIN CONTENT ================================= --> <div class="container">
+
+<div class="card">
+
+
+    <h1>
+        About Me
+    </h1>
+
+
+    <p>
+        Hello! I'm Sophie Schöneberg, a Data Science Master's
+        student at the University of Mannheim with a strong focus
+        on corporate security management and data science.
+    </p>
+
+
+    <h2>
+        Background &amp; Focus
+    </h2>
+
+
+    <p>
+        I completed my Bachelor's degree in Political Science at
+        the University of Mannheim, where I focused on International
+        Relations and Statistics with excellent grades. My work
+        centered on large-scale data projects, such as analysing
+        sentiment differences in independent and state-controlled
+        news articles, where I examined over 20,000 articles and
+        their commentary across various economic, social, and
+        political events. I primarily work with R and Python to
+        develop the projects available on my page. I wrote my
+        Bachelor's Thesis on the growing impact of dual-use
+        satellites in space and the dangers that come with
+        blurring the lines between civil and military objects.
+    </p>
+
+
+    <p>
+        I also work as a Student Researcher at the Chair of
+        International Relations, where I collect information on
+        pro-government militias, paramilitaries, and private
+        security companies for various countries, with a primary
+        focus on Africa and Asia. If you are interested in learning
+        more about me, feel free to download my resume or message
+        me on your preferred communication channel.
+    </p>
+
+
+    <h2>
+        Interests
+    </h2>
+
+
+    <p>
+        My interests lie in both qualitative and quantitative
+        analyses of security-related events, specifically bridging
+        the gap between political science and advanced data science.
+        With my skill set, I aim to drive data-driven decision-making
+        in the fields of Cyber Threat Intelligence (CTI), Open Source
+        Intelligence (OSINT), and Geopolitical Risk Modeling within
+        corporate security and supply chain environments. Backed by
+        my academic background and technical expertise, I am motivated
+        by contemporary global disruptions and their impacts on
+        critical infrastructure, logistics, and international business.
+        Here are a few questions I find compelling:
+    </p>
+
+
+    <div class="questions">
+
+        <p>
+            <span class="question">01 //</span>
+            How can we automatically detect and track supply chain
+            vulnerabilities or maritime/aviation disruptions using
+            open-source data and anomaly detection? When a single
+            cargo ship blocks a global trade hub, what mathematical
+            structure tells us in advance where the next fragile
+            bottleneck in the global supply chain will break?
+        </p>
+
+
+        <p>
+            <span class="question">02 //</span>
+            Can Natural Language Processing (NLP) map and forecast
+            geopolitical tensions and state-sponsored disinformation
+            campaigns in real-time?
+        </p>
+
+
+        <p>
+            <span class="question">03 //</span>
+            How do we transition from reactive corporate security
+            to predictive threat intelligence by fusing hard data
+            streams with qualitative geopolitical analysis?
+        </p>
+
+
+        <p>
+            <span class="question">04 //</span>
+            How can we use nocturnal satellite imagery and light
+            anomalies to predict actual economic activity or trouble
+            spots in lockdown regions where all official statistics
+            are manipulated?
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- =================================
+     FOOTER
+     ================================= -->
+
+<footer>
+
+    <p>
+        © 2026 Sophie Schöneberg.
+        All rights reserved.
+    </p>
+
+    <p>
+        Built with HTML &amp; hosted on GitHub Pages.
+    </p>
+
+</footer>
+
+</div> <!-- ================================= TERMINAL JAVASCRIPT ================================= --> 
+<script> const terminalInput = document.getElementById( 'terminal-input' ); const terminalOutput = document.querySelector( '.terminal-output' );
+ if (terminalInput) { terminalInput.addEventListener( 'keydown', function(e) { if (e.key !== 'Enter') { return; } const rawCommand = terminalInput.value.trim(); const cmd = rawCommand.toLowerCase(); const
+  commandLine = `<br> <span class="prompt"> PS C:\\Portfolio&gt; </span> ${escapeHtml(rawCommand)}`; let response = ''; 
+  
+  /* ========================== HOME ========================== */
+   if ( cmd === 'home' || cmd === 'index' || cmd === 'index.html' ) 
+   { response = '<br>Opening index.html...'; terminalOutput.innerHTML += commandLine + response; terminalInput.value = ''; 
+   
+   setTimeout( () => { window.location.href = '../index.html'; }, 400 ); return; } 
+   
+   
+   /* ========================== RESUME ========================== */ else if ( cmd === 'resume' || cmd === 'resume.html' ) 
+   
+{ response = '<br>Opening resume.html...'; terminalOutput.innerHTML += commandLine + response; terminalInput.value = ''; 
+setTimeout( () => { window.location.href = '../resume.html'; }, 400 ); return; } 
+/* ========================== HELP ========================== */ else if ( cmd === 'help' ) 
+{ response = ` <br> Available commands:<br> &nbsp;&nbsp;home&nbsp;&nbsp;&nbsp;&nbsp; 
+    Return to home page<br> &nbsp;&nbsp;resume&nbsp;&nbsp; Open resume page<br> &nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp; Clear terminal<br> `; } 
+    
+    
+    /* ========================== CLEAR ========================== */ 
+    else if ( cmd === 'clear' || cmd === 'cls' ) 
+    { terminalOutput.innerHTML = ` Portfolio Terminal<br><br> Current page: <span class="command-highlight"> 
+        aboutme </span> <br><br> Available commands: <span class="command-list"> home&nbsp;&nbsp; resume 
+            </span> <br> Type <span class="command-highlight"> help </span> for more options.<br><br> `;
+             terminalInput.value = ''; return; } 
+
+/* ========================== EMPTY COMMAND ========================== */ 
+else if ( cmd === '' ) { response = ''; }
+
+/* ========================== UNKNOWN COMMAND ========================== */ 
+else { response = ` <br> '${escapeHtml(rawCommand)}' is not recognized. Type 'help' to see available commands. `; } 
+terminalOutput.innerHTML += commandLine + response + '<br>'; terminalInput.value = ''; /* * Keep the terminal focused * after every command. 
+
+*/ terminalInput.focus(); } ); } /* ================================= HTML ESCAPE FUNCTION ================================= */
+function escapeHtml(text) { return text .replace( /&/g, "&amp;" ) .replace( /</g, "&lt;" ) .replace( />/g, "&gt;" ) 
+.replace( /"/g, "&quot;" ) .replace( /'/g, "&#039;" ); } </script> </body> </html> 
